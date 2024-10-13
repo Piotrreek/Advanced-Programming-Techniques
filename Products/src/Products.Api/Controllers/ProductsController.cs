@@ -2,6 +2,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Products.Api.Requests.Products;
 using Products.Application.Features.Products.CreateProduct;
+using Products.Application.Features.Products.DeleteProduct;
 using Products.Application.Features.Products.GetProduct;
 using Products.Application.Features.Products.GetProducts;
 using Products.Application.Features.Products.UpdateProduct;
@@ -39,6 +40,15 @@ public class ProductsController : ControllerBase
     public async Task<IActionResult> UpdateAsync([FromRoute] int id, [FromBody] UpdateProductRequest request)
     {
         var command = new UpdateProduct(id, request.Name, request.Quantity, request.Price, request.Description);
+        await _sender.Send(command);
+
+        return NoContent();
+    }
+
+    [HttpDelete("{id:int}")]
+    public async Task<IActionResult> DeleteAsync([FromRoute] int id)
+    {
+        var command = new DeleteProduct(id);
         await _sender.Send(command);
 
         return NoContent();

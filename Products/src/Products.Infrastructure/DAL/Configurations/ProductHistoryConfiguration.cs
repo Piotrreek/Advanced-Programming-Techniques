@@ -41,9 +41,17 @@ internal sealed class ProductHistoryConfiguration : IEntityTypeConfiguration<Pro
             .HasMaxLength(Constraints.DescriptionMaxLength)
             .IsRequired(false);
 
+        builder.Property(x => x.Available)
+            .IsRequired();
+
+        builder.Property(x => x.Deleted)
+            .IsRequired();
+        
         builder.Property(x => x.ProductId)
             .HasConversion(x => x.Value, id => ProductId.Create(id));
 
+        builder.HasQueryFilter(x => !x.Deleted);
+        
         builder.HasOne(x => x.Product)
             .WithMany()
             .HasForeignKey(x => x.ProductId)

@@ -49,8 +49,13 @@ internal sealed class ProductConfiguration : IEntityTypeConfiguration<Product>
         builder.Property(x => x.Available)
             .IsRequired();
 
+        builder.Property(x => x.Deleted)
+            .IsRequired();
+
         builder.HasIndex(x => x.Name)
             .IsUnique();
+
+        builder.HasQueryFilter(x => !x.Deleted);
 
         builder.HasMany<ProductHistory>()
             .WithOne(x => x.Product)

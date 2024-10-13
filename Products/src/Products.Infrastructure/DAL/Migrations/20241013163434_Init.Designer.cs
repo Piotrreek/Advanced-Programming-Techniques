@@ -11,7 +11,7 @@ using Products.Infrastructure.DAL;
 namespace Products.Infrastructure.DAL.Migrations
 {
     [DbContext(typeof(ProductsContext))]
-    [Migration("20241013153820_Init")]
+    [Migration("20241013163434_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -33,6 +33,9 @@ namespace Products.Infrastructure.DAL.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<bool>("Available")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("Deleted")
                         .HasColumnType("boolean");
 
                     b.Property<string>("Description")
@@ -73,6 +76,12 @@ namespace Products.Infrastructure.DAL.Migrations
                         .HasColumnType("integer");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("Available")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("Deleted")
+                        .HasColumnType("boolean");
 
                     b.Property<string>("Description")
                         .HasMaxLength(300)

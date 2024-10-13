@@ -8,6 +8,7 @@ public sealed class Product
     public ProductPrice Price { get; private set; }
     public ProductDescription Description { get; private set; }
     public bool Available { get; private set; }
+    public bool Deleted { get; private set; }
 
     private Product(
         ProductName name,
@@ -21,6 +22,7 @@ public sealed class Product
         Price = price;
         Description = description;
         Available = quantity > 0;
+        Deleted = false;
     }
 
     public static Product Create(
@@ -49,5 +51,10 @@ public sealed class Product
     public void UpdateDescription(ProductDescription description)
     {
         Description = description;
+    }
+
+    public void Delete()
+    {
+        Deleted = true;
     }
 }

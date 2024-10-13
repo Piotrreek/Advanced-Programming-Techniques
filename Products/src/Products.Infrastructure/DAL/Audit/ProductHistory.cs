@@ -10,6 +10,8 @@ internal sealed class ProductHistory
     public int Quantity { get; private set; }
     public decimal Price { get; private set; }
     public string? Description { get; private set; }
+    public bool Available { get; private set; }
+    public bool Deleted { get; private set; }
     public Product Product { get; private set; } = default!;
     public ProductId ProductId { get; private set; } = default!;
 
@@ -21,6 +23,8 @@ internal sealed class ProductHistory
         Quantity = product.Quantity;
         Price = product.Price;
         Description = product.Description;
+        Available = product.Available;
+        Deleted = product.Deleted;
     }
 
     // For EF
