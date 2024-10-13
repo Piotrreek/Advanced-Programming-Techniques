@@ -1,4 +1,5 @@
 using Products.Application.Abstractions;
+using Products.Application.Features.Products.Common.Exceptions;
 using Products.Domain.Products;
 using Products.Domain.Products.Abstractions;
 
@@ -15,7 +16,17 @@ internal sealed class CreateProductHandler : ICommandHandler<CreateProduct>
 
     public async Task Handle(CreateProduct request, CancellationToken cancellationToken)
     {
-        var product = Product.Create();
+        if (await _productRepository.ExistsAsync(request.Name, cancellationToken))
+        {
+            throw new ProductWithNameExistsException();
+        }
+
+        var product = Product.Create(
+            request.Name,
+            request.Quantity,
+            request.Price,
+            request.Description
+        );
 
         await _productRepository.AddAsync(product, cancellationToken);
     }

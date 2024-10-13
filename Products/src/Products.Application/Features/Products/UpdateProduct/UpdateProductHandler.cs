@@ -1,5 +1,5 @@
 using Products.Application.Abstractions;
-using Products.Application.Common.Exceptions;
+using Products.Application.Features.Products.Common.Exceptions;
 using Products.Domain.Products.Abstractions;
 
 namespace Products.Application.Features.Products.UpdateProduct;
@@ -22,7 +22,15 @@ internal sealed class UpdateProductHandler : ICommandHandler<UpdateProduct>
             throw new ProductNotFoundException();
         }
 
-        product.Update();
+        if (product.Name != request.Name && await _productRepository.ExistsAsync(product.Name, cancellationToken))
+        {
+            throw new ProductWithNameExistsException();
+        }
+
+        product.UpdateName(request.Name);
+        product.UpdateDescription(request.Description);
+        product.UpdatePrice(request.Price);
+        product.UpdateQuantity(request.Quantity);
 
         _productRepository.Update(product);
     }

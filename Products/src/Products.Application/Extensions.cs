@@ -1,4 +1,5 @@
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using Products.Application.Behaviors;
@@ -11,7 +12,7 @@ public static class Extensions
 
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
-        services.AddValidatorsFromAssembly(CurrentAssembly);
+        services.AddValidatorsFromAssembly(CurrentAssembly, includeInternalTypes: true);
         services.AddMediatR(cfg =>
         {
             cfg.RegisterServicesFromAssembly(CurrentAssembly);

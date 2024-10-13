@@ -24,6 +24,9 @@ internal sealed class ProductRepository : IProductRepository
     public Task<List<Product>> GetAsync(CancellationToken cancellationToken)
         => _context.Product.ToListAsync(cancellationToken);
 
+    public Task<bool> ExistsAsync(ProductName productName, CancellationToken cancellationToken)
+        => _context.Product.AnyAsync(x => x.Name == productName, cancellationToken);
+
     public void Update(Product product)
     {
         _context.Product.Update(product);

@@ -1,5 +1,5 @@
 using Products.Application.Abstractions;
-using Products.Application.Common.Exceptions;
+using Products.Application.Features.Products.Common.Exceptions;
 using Products.Application.Features.Products.DTO;
 using Products.Application.Features.Products.Extensions;
 using Products.Domain.Products.Abstractions;

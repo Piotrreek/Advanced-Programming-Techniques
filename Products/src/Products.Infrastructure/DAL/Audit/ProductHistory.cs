@@ -6,6 +6,10 @@ internal sealed class ProductHistory
 {
     public int Id { get; private set; }
     public bool IsActive { get; private set; }
+    public string Name { get; private set; } = default!;
+    public int Quantity { get; private set; }
+    public decimal Price { get; private set; }
+    public string? Description { get; private set; }
     public Product Product { get; private set; } = default!;
     public ProductId ProductId { get; private set; } = default!;
 
@@ -13,6 +17,10 @@ internal sealed class ProductHistory
     {
         Product = product;
         IsActive = true;
+        Name = product.Name;
+        Quantity = product.Quantity;
+        Price = product.Price;
+        Description = product.Description;
     }
 
     // For EF

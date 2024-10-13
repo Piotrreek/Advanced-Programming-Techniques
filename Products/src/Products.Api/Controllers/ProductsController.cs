@@ -25,7 +25,7 @@ public class ProductsController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> CreateAsync([FromBody] CreateProductRequest request)
     {
-        var command = new CreateProduct();
+        var command = new CreateProduct(request.Name, request.Quantity, request.Price, request.Description);
         await _sender.Send(command);
 
         return Created();
@@ -38,7 +38,7 @@ public class ProductsController : ControllerBase
     [HttpPatch("{id:int}")]
     public async Task<IActionResult> UpdateAsync([FromRoute] int id, [FromBody] UpdateProductRequest request)
     {
-        var command = new UpdateProduct(id);
+        var command = new UpdateProduct(id, request.Name, request.Quantity, request.Price, request.Description);
         await _sender.Send(command);
 
         return NoContent();
