@@ -81,16 +81,16 @@ namespace Products.Tests.Integration.Features
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Successfully creating a new product")]
+        [Xunit.SkippableFactAttribute(DisplayName="Create Product")]
         [Xunit.TraitAttribute("FeatureTitle", "Create a New Product")]
-        [Xunit.TraitAttribute("Description", "Successfully creating a new product")]
+        [Xunit.TraitAttribute("Description", "Create Product")]
         [Xunit.TraitAttribute("Category", "createProduct")]
-        public void SuccessfullyCreatingANewProduct()
+        public void CreateProduct()
         {
             string[] tagsOfScenario = new string[] {
                     "createProduct"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Successfully creating a new product", null, tagsOfScenario, argumentsOfScenario, featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create Product", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 7
     this.ScenarioInitialize(scenarioInfo);
 #line hidden

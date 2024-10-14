@@ -1,8 +1,12 @@
+using System.Data.Common;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Npgsql;
 using Products.Infrastructure.DAL;
+using Respawn;
+using Respawn.Graph;
 using Testcontainers.PostgreSql;
 using Xunit;
 
@@ -15,6 +19,11 @@ public class ApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
         .WithPassword("password")
         .WithImage("postgres:latest")
         .Build();
+
+    private Respawner _respawner = default!;
+    private DbConnection _dbConnection = default!;
+
+    public HttpClient Client { get; private set; } = default!;
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
@@ -34,14 +43,36 @@ public class ApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
         base.ConfigureWebHost(builder);
     }
 
+    public async Task ResetDatabaseAsync()
+    {
+        // clean tables in database
+        await _respawner.ResetAsync(_dbConnection);
+    }
+
     public async Task InitializeAsync()
     {
         await _container.StartAsync();
+        Client = CreateClient();
+        _dbConnection = new NpgsqlConnection(_container.GetConnectionString());
+        await _dbConnection.OpenAsync();
+        await InitializeRespawnerAsync();
     }
 
     public new async Task DisposeAsync()
     {
         await _container.StopAsync();
         await _container.DisposeAsync();
+        await _dbConnection.DisposeAsync();
+        Client.Dispose();
+    }
+
+    private async Task InitializeRespawnerAsync()
+    {
+        _respawner = await Respawner.CreateAsync(_dbConnection, new RespawnerOptions
+        {
+            DbAdapter = DbAdapter.Postgres,
+            TablesToIgnore = ["__EFMigrationsHistory"],
+            SchemasToInclude = ["public"]
+        });
     }
 }

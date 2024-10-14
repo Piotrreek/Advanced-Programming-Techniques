@@ -11,22 +11,11 @@ namespace Products.Tests.Integration.Steps;
 [Binding]
 public class CreateProductStepDefinitions : IClassFixture<ApiFactory>
 {
-    private static ApiFactory _apiFactory = default!;
-    private static HttpClient _client = default!;
+    private readonly HttpClient _client;
 
-    [BeforeTestRun]
-    public static async Task BeforeTestRun()
+    public CreateProductStepDefinitions(ApiFactory apiFactory)
     {
-        _apiFactory = new ApiFactory();
-        await _apiFactory.InitializeAsync();
-        _client = _apiFactory.CreateClient();
-    }
-
-    [AfterTestRun]
-    public static async Task AfterTestRun()
-    {
-        _client.Dispose();
-        await _apiFactory.DisposeAsync();
+        _client = apiFactory.Client;
     }
 
     [When("I create the product with name '(.*)', quantity '(.*)', price '(.*)', description '(.*)'")]

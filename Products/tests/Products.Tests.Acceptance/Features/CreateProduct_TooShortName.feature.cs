@@ -19,7 +19,7 @@ namespace Products.Tests.Integration.Features
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.9.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public partial class NegativeProductPriceFeature : object, Xunit.IClassFixture<NegativeProductPriceFeature.FixtureData>, System.IDisposable
+    public partial class CreateANewProductWithTooShortNameFeature : object, Xunit.IClassFixture<CreateANewProductWithTooShortNameFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
@@ -28,10 +28,10 @@ namespace Products.Tests.Integration.Features
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
-#line 1 "NegativePrice.feature"
+#line 1 "CreateProduct_TooShortName.feature"
 #line hidden
         
-        public NegativeProductPriceFeature(NegativeProductPriceFeature.FixtureData fixtureData, Products_Tests_Integration_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public CreateANewProductWithTooShortNameFeature(CreateANewProductWithTooShortNameFeature.FixtureData fixtureData, Products_Tests_Integration_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
             this.TestInitialize();
@@ -40,8 +40,9 @@ namespace Products.Tests.Integration.Features
         public static void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features", "Negative Product Price", "        As a user of the system\r\n        I want to ensure that product prices are" +
-                    " valid\r\n        So that I don\'t add products with negative prices", ProgrammingLanguage.CSharp, featureTags);
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features", "Create a new product with too short name", "        As a user of the system\r\n        I want to be prevented from creating a p" +
+                    "roduct with too short name\r\n        So that only valid product names with length" +
+                    " more than 2 are only allowed ", ProgrammingLanguage.CSharp, featureTags);
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -81,16 +82,16 @@ namespace Products.Tests.Integration.Features
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Failing to create a product with a negative price")]
-        [Xunit.TraitAttribute("FeatureTitle", "Negative Product Price")]
-        [Xunit.TraitAttribute("Description", "Failing to create a product with a negative price")]
-        [Xunit.TraitAttribute("Category", "createProductNegativePrice")]
-        public void FailingToCreateAProductWithANegativePrice()
+        [Xunit.SkippableFactAttribute(DisplayName="Failing to create a product with a name that is too short")]
+        [Xunit.TraitAttribute("FeatureTitle", "Create a new product with too short name")]
+        [Xunit.TraitAttribute("Description", "Failing to create a product with a name that is too short")]
+        [Xunit.TraitAttribute("Category", "invalidNameLength")]
+        public void FailingToCreateAProductWithANameThatIsTooShort()
         {
             string[] tagsOfScenario = new string[] {
-                    "createProductNegativePrice"};
+                    "invalidNameLength"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Failing to create a product with a negative price", null, tagsOfScenario, argumentsOfScenario, featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Failing to create a product with a name that is too short", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 7
     this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -101,27 +102,15 @@ namespace Products.Tests.Integration.Features
             else
             {
                 this.ScenarioStart();
-                TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
-                            "Name",
-                            "Quantity",
-                            "Price",
-                            "Description"});
-                table2.AddRow(new string[] {
-                            "ValidName",
-                            "5",
-                            "-49.99",
-                            "A product"});
 #line 8
-        testRunner.Given("I have the following product details:", ((string)(null)), table2, "Given ");
+        testRunner.When("I try to create the product with too short name \'AA\', quantity \'10\', price \'99.99" +
+                        "\', description \'A sample product.\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 11
-        testRunner.When("I attempt to create the product", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 9
+        testRunner.Then("the system should not create product", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 12
-        testRunner.Then("the system should reject the product", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-#line 13
-        testRunner.And("I should see an error message indicating invalid price", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 10
+        testRunner.And("I should see an error message indicating the name length is too short", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -134,12 +123,12 @@ namespace Products.Tests.Integration.Features
             
             public FixtureData()
             {
-                NegativeProductPriceFeature.FeatureSetup();
+                CreateANewProductWithTooShortNameFeature.FeatureSetup();
             }
             
             void System.IDisposable.Dispose()
             {
-                NegativeProductPriceFeature.FeatureTearDown();
+                CreateANewProductWithTooShortNameFeature.FeatureTearDown();
             }
         }
     }

@@ -102,18 +102,18 @@ namespace Products.Tests.Integration.Features
             else
             {
                 this.ScenarioStart();
-                TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
                             "Name",
                             "Quantity",
                             "Price",
                             "Description"});
-                table3.AddRow(new string[] {
+                table1.AddRow(new string[] {
                             "InvalidProduct",
                             "-5",
                             "49.99",
                             "Invalid quantity"});
 #line 8
-        testRunner.Given("I have the following product details:", ((string)(null)), table3, "Given ");
+        testRunner.Given("I have the following product details:", ((string)(null)), table1, "Given ");
 #line hidden
 #line 11
         testRunner.When("I attempt to create the product", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
