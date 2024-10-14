@@ -19,12 +19,14 @@ namespace Products.Tests.Integration.Features
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.9.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
+    [Xunit.TraitAttribute("Category", "CreateProduct")]
     public partial class CreateANewProductFeature : object, Xunit.IClassFixture<CreateANewProductFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
-        private static string[] featureTags = ((string[])(null));
+        private static string[] featureTags = new string[] {
+                "CreateProduct"};
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
@@ -81,17 +83,17 @@ namespace Products.Tests.Integration.Features
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Create Product")]
+        [Xunit.SkippableFactAttribute(DisplayName="Create product with valid data")]
         [Xunit.TraitAttribute("FeatureTitle", "Create a New Product")]
-        [Xunit.TraitAttribute("Description", "Create Product")]
-        [Xunit.TraitAttribute("Category", "createProduct")]
-        public void CreateProduct()
+        [Xunit.TraitAttribute("Description", "Create product with valid data")]
+        [Xunit.TraitAttribute("Category", "CreateProduct_1")]
+        public void CreateProductWithValidData()
         {
             string[] tagsOfScenario = new string[] {
-                    "createProduct"};
+                    "CreateProduct_1"};
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create Product", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 7
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create product with valid data", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 8
     this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -101,13 +103,149 @@ namespace Products.Tests.Integration.Features
             else
             {
                 this.ScenarioStart();
-#line 8
+#line 9
         testRunner.When("I create the product with name \'SampleProduct\', quantity \'10\', price \'99.99\', des" +
                         "cription \'A sample product.\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 9
+#line 10
         testRunner.Then("product with name \'SampleProduct\', quantity \'10\', price \'99.99\', description \'A s" +
                         "ample product.\' should be created", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="Create product with too long name")]
+        [Xunit.TraitAttribute("FeatureTitle", "Create a New Product")]
+        [Xunit.TraitAttribute("Description", "Create product with too long name")]
+        [Xunit.TraitAttribute("Category", "CreateProduct_2")]
+        public void CreateProductWithTooLongName()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "CreateProduct_2"};
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create product with too long name", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 13
+    this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 14
+        testRunner.When("I create the product with name \'ThisIsAnExtremelyLongProductNameThatIsInvalid\', q" +
+                        "uantity \'10\', price \'99.99\', description \'A sample product.\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 15
+        testRunner.Then("the system should not create product", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 16
+        testRunner.And("I should see an error message indicating the name length is too long", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="Create product with too short name")]
+        [Xunit.TraitAttribute("FeatureTitle", "Create a New Product")]
+        [Xunit.TraitAttribute("Description", "Create product with too short name")]
+        [Xunit.TraitAttribute("Category", "CreateProduct_3")]
+        public void CreateProductWithTooShortName()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "CreateProduct_3"};
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create product with too short name", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 19
+    this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 20
+        testRunner.When("I create the product with name \'AA\', quantity \'10\', price \'99.99\', description \'A" +
+                        " sample product.\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 21
+        testRunner.Then("the system should not create product", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 22
+        testRunner.And("I should see an error message indicating the name length is too short", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="Create product with negative quantity")]
+        [Xunit.TraitAttribute("FeatureTitle", "Create a New Product")]
+        [Xunit.TraitAttribute("Description", "Create product with negative quantity")]
+        [Xunit.TraitAttribute("Category", "CreateProduct_4")]
+        public void CreateProductWithNegativeQuantity()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "CreateProduct_4"};
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create product with negative quantity", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 25
+    this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 26
+        testRunner.When("I create the product with name \'SampleProduct\', quantity \'-1\', price \'99.99\', des" +
+                        "cription \'A sample product.\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 27
+        testRunner.Then("the system should not create product", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 28
+        testRunner.And("I should see an error message indicating the quantity is invalid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Xunit.SkippableFactAttribute(DisplayName="Create product with negative price")]
+        [Xunit.TraitAttribute("FeatureTitle", "Create a New Product")]
+        [Xunit.TraitAttribute("Description", "Create product with negative price")]
+        [Xunit.TraitAttribute("Category", "CreateProduct_5")]
+        public void CreateProductWithNegativePrice()
+        {
+            string[] tagsOfScenario = new string[] {
+                    "CreateProduct_5"};
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create product with negative price", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 31
+    this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 32
+        testRunner.When("I create the product with name \'SampleProduct\', quantity \'5\', price \'-99.99\', des" +
+                        "cription \'A sample product.\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 33
+        testRunner.Then("the system should not create product", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 34
+        testRunner.And("I should see an error message indicating invalid price", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();

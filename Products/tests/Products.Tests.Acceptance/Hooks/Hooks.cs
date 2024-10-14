@@ -7,7 +7,7 @@ namespace Products.Tests.Integration.Hooks;
 [Binding]
 public class Hooks
 {
-    [BeforeTestRun]
+    [BeforeFeature("CreateProduct")]
     public static async Task RegisterServices(IObjectContainer objectContainer)
     {
         var factory = new ApiFactory();
@@ -22,7 +22,7 @@ public class Hooks
         await factory.ResetDatabaseAsync();
     }
 
-    [AfterTestRun]
+    [AfterFeature("CreateProduct")]
     public static async Task DisposeAsync(IObjectContainer objectContainer)
     {
         var factory = objectContainer.Resolve<ApiFactory>();
