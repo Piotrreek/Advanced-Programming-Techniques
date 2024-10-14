@@ -17,7 +17,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Products.Infrastructure", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Products.Tests.Unit", "tests\Products.Tests.Unit\Products.Tests.Unit.csproj", "{0C39A464-CEFA-44EA-993E-A69AD255FB0F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Products.Tests.Integration", "tests\Products.Tests.Integration\Products.Tests.Integration.csproj", "{88823037-E49F-4170-ADCE-C04DC55A5813}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Products.Tests.Acceptance", "tests\Products.Tests.Acceptance\Products.Tests.Acceptance.csproj", "{88823037-E49F-4170-ADCE-C04DC55A5813}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
