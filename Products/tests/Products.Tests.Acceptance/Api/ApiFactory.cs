@@ -45,7 +45,6 @@ public class ApiFactory : WebApplicationFactory<Program>, IAsyncLifetime
 
     public async Task ResetDatabaseAsync()
     {
-        // clean tables in database
         await _respawner.ResetAsync(_dbConnection);
     }
 
