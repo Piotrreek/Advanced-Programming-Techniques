@@ -10,6 +10,9 @@ public static class Errors
     public static string NameMaxLength
         => $"Product name length must be less or equal to {Constraints.NameMaxLength}.";
 
+    public static string NameRegex
+        => "Product name must consist only of letters and numbers.";
+
     public static string QuantityNegative => "Quantity cannot be negative.";
 
     public static string PriceMinValue => $"Price must be greater than or equal to {Constraints.MinPrice}";

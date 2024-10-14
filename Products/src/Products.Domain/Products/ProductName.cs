@@ -1,9 +1,12 @@
+using System.Text.RegularExpressions;
 using Products.Domain.Products.Exceptions;
 
 namespace Products.Domain.Products;
 
 public sealed record ProductName
 {
+    public static Regex Regex { get; } = new("^[a-zA-Z0-9]*$");
+
     public string Value { get; }
 
     private ProductName(string value)
@@ -16,6 +19,11 @@ public sealed record ProductName
         if (string.IsNullOrWhiteSpace(value))
         {
             throw new InvalidProductNameException(Errors.NameEmpty);
+        }
+
+        if (!Regex.IsMatch(value))
+        {
+            throw new InvalidProductNameException(Errors.NameRegex);
         }
 
         return value.Length switch

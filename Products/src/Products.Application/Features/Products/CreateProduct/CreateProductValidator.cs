@@ -10,6 +10,8 @@ internal sealed class CreateProductValidator : AbstractValidator<CreateProduct>
         RuleFor(x => x.Name)
             .NotEmpty()
             .WithMessage(Errors.NameEmpty)
+            .Matches(ProductName.Regex)
+            .WithMessage(Errors.NameRegex)
             .MinimumLength(Constraints.NameMinLength)
             .WithMessage(Errors.NameMinLength)
             .MaximumLength(Constraints.NameMaxLength)
