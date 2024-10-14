@@ -5,7 +5,7 @@ using TechTalk.SpecFlow;
 namespace Products.Tests.Integration.Hooks;
 
 [Binding]
-public class Hooks
+public class CreateProductHooks
 {
     [BeforeFeature("CreateProduct")]
     public static async Task RegisterServices(IObjectContainer objectContainer)
