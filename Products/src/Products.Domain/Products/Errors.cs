@@ -18,7 +18,7 @@ public static class Errors
     public static string QuantityNegative => "Quantity cannot be negative.";
 
     public static string PriceMinValue =>
-        $"Price must be greater than or equal to {Constraints.MinPrice.ToString(new CultureInfo("EN-en"))}";
+        $"Price must be greater than or equal to {Constraints.MinPrice.ToString(CultureInfo.InvariantCulture)}";
 
     public static string DescriptionMaxLength
         => $"Product description length must be less or equal to {Constraints.DescriptionMaxLength}.";
