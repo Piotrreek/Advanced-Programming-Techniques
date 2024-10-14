@@ -24,4 +24,6 @@ public sealed record ProductQuantity
     public static implicit operator int(ProductQuantity productQuantity) => productQuantity.Value;
 
     public static implicit operator ProductQuantity(int productQuantity) => Create(productQuantity);
+
+    public override string ToString() => Value.ToString();
 }

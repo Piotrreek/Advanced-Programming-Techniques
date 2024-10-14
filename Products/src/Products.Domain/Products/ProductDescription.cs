@@ -24,4 +24,6 @@ public sealed record ProductDescription
     public static implicit operator string?(ProductDescription productDescription) => productDescription.Value;
 
     public static implicit operator ProductDescription(string? productDescription) => Create(productDescription);
+
+    public override string? ToString() => Value;
 }

@@ -10,8 +10,7 @@ internal sealed class ProductsContext : DbContext
     {
     }
 
-    public DbSet<Product> Product { get; set; }
-    public DbSet<ProductHistory> ProductHistory { get; set; }
+    public DbSet<Product> Product => Set<Product>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

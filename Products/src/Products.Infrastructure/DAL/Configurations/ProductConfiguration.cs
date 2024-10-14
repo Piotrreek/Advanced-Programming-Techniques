@@ -56,11 +56,5 @@ internal sealed class ProductConfiguration : IEntityTypeConfiguration<Product>
             .IsUnique();
 
         builder.HasQueryFilter(x => !x.Deleted);
-
-        builder.HasMany<ProductHistory>()
-            .WithOne(x => x.Product)
-            .HasForeignKey(x => x.ProductId)
-            .IsRequired()
-            .OnDelete(DeleteBehavior.Cascade);
     }
 }

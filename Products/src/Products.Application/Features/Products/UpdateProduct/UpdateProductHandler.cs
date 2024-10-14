@@ -22,7 +22,7 @@ internal sealed class UpdateProductHandler : ICommandHandler<UpdateProduct>
             throw new ProductNotFoundException();
         }
 
-        if (product.Name != request.Name && await _productRepository.ExistsAsync(product.Name, cancellationToken))
+        if (product.Name != request.Name && await _productRepository.ExistsAsync(request.Name, cancellationToken))
         {
             throw new ProductWithNameExistsException();
         }

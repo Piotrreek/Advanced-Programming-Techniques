@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
@@ -33,30 +34,43 @@ namespace Products.Infrastructure.DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ProductHistory",
+                name: "ProductAudit",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    IsActive = table.Column<bool>(type: "boolean", nullable: false),
-                    Name = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
-                    Quantity = table.Column<int>(type: "integer", nullable: false),
-                    Price = table.Column<decimal>(type: "numeric(8,2)", precision: 8, scale: 2, nullable: false),
-                    Description = table.Column<string>(type: "character varying(300)", maxLength: 300, nullable: true),
-                    Available = table.Column<bool>(type: "boolean", nullable: false),
-                    Deleted = table.Column<bool>(type: "boolean", nullable: false),
-                    ProductId = table.Column<int>(type: "integer", nullable: false)
+                    ProductId = table.Column<int>(type: "integer", nullable: false),
+                    ChangeDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProductHistory", x => x.Id);
-                    table.CheckConstraint("ProductHistory_Name_MinLength", "LENGTH(\"ProductHistory\".\"Name\") >= 3");
-                    table.CheckConstraint("ProductHistory_Price_MinValue", " \"ProductHistory\".\"Price\" >= 0.01");
-                    table.CheckConstraint("ProductHistory_Quantity_MinValue", " \"ProductHistory\".\"Quantity\" >= 0");
+                    table.PrimaryKey("PK_ProductAudit", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ProductHistory_Product_ProductId",
+                        name: "FK_ProductAudit_Product_ProductId",
                         column: x => x.ProductId,
                         principalTable: "Product",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ProductAuditEntry",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    FieldName = table.Column<string>(type: "text", nullable: false),
+                    OldValue = table.Column<string>(type: "text", nullable: true),
+                    NewValue = table.Column<string>(type: "text", nullable: true),
+                    ProductAuditId = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProductAuditEntry", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ProductAuditEntry_ProductAudit_ProductAuditId",
+                        column: x => x.ProductAuditId,
+                        principalTable: "ProductAudit",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -68,16 +82,24 @@ namespace Products.Infrastructure.DAL.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProductHistory_ProductId",
-                table: "ProductHistory",
+                name: "IX_ProductAudit_ProductId",
+                table: "ProductAudit",
                 column: "ProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProductAuditEntry_ProductAuditId",
+                table: "ProductAuditEntry",
+                column: "ProductAuditId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "ProductHistory");
+                name: "ProductAuditEntry");
+
+            migrationBuilder.DropTable(
+                name: "ProductAudit");
 
             migrationBuilder.DropTable(
                 name: "Product");

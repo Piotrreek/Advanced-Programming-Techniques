@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Products.Domain.Products;
 using Products.Infrastructure.DAL.Audit;
@@ -17,37 +18,53 @@ internal sealed class AuditProductChangesInterceptor : SaveChangesInterceptor
             return await base.SavingChangesAsync(eventData, result, cancellationToken);
         }
 
-        var productEntries = context.ChangeTracker.Entries<Product>()
-            .Where(x => x.State is EntityState.Added or EntityState.Modified)
-            .ToList();
+        var productAudits = GetProductAudits(context);
 
-        foreach (var productEntry in productEntries)
-        {
-            if (productEntry.State is EntityState.Added)
-            {
-                await CreateAuditEntry(productEntry.Entity, context);
-                continue;
-            }
-
-            await DeactivateOldAuditEntryAndCreateNewOne(productEntry.Entity, context);
-        }
+        await context.Set<ProductAudit>().AddRangeAsync(productAudits, cancellationToken);
 
         return await base.SavingChangesAsync(eventData, result, cancellationToken);
     }
 
-    private static async Task DeactivateOldAuditEntryAndCreateNewOne(Product product, DbContext context)
+    private static List<ProductAudit> GetProductAudits(DbContext context)
     {
-        var oldAuditEntry = await context.Set<ProductHistory>()
-            .SingleAsync(x => x.ProductId == product.Id && x.IsActive);
+        var now = DateTimeOffset.UtcNow;
 
-        oldAuditEntry.Deactivate();
+        List<ProductAudit> productAudits = [];
+        var entityEntries = context.ChangeTracker.Entries<Product>().Where(x => x.State != EntityState.Unchanged);
+        foreach (var entityEntry in entityEntries)
+        {
+            var audit = new ProductAudit(now, entityEntry.Entity);
+            var isAdd = entityEntry.State == EntityState.Added;
 
-        await CreateAuditEntry(product, context);
+            foreach (var property in entityEntry.Properties)
+            {
+                if (ShouldAuditProperty(property, isAdd))
+                {
+                    var entry = new ProductAuditEntry(property.Metadata.Name,
+                        isAdd ? null : property.OriginalValue?.ToString(), property.CurrentValue?.ToString());
+
+                    audit.AddEntry(entry);
+                }
+            }
+
+            productAudits.Add(audit);
+        }
+
+        return productAudits;
     }
 
-    private static async Task CreateAuditEntry(Product product, DbContext context)
+    private static bool ShouldAuditProperty(PropertyEntry property, bool isAdd)
     {
-        var productHistory = new ProductHistory(product);
-        await context.Set<ProductHistory>().AddAsync(productHistory);
+        if (property.Metadata.IsPrimaryKey())
+        {
+            return false;
+        }
+
+        if (isAdd && property.CurrentValue != null)
+        {
+            return true;
+        }
+
+        return property.IsModified && !Equals(property.CurrentValue, property.OriginalValue);
     }
 }

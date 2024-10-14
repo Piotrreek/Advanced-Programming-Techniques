@@ -37,4 +37,6 @@ public sealed record ProductName
     public static implicit operator string(ProductName name) => name.Value;
 
     public static implicit operator ProductName(string name) => Create(name);
+
+    public override string ToString() => Value;
 }
