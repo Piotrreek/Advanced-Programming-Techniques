@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:ProductsManager.ViewModels"
+             x:Class="ProductsManager.Views.ProductsView"
+             Title="Products">
+
+    <CollectionView ItemsSource="{Binding Products}" WidthRequest="850" HorizontalOptions="Start">
+        <CollectionView.ItemTemplate>
+            <DataTemplate>
+                <Frame BorderColor="LightGray" CornerRadius="0" Padding="0" HasShadow="False">
+                    <Grid Padding="10" RowDefinitions="Auto">
+                        <StackLayout Orientation="Horizontal" VerticalOptions="Center">
+                            <Label Text="{Binding Name}" FontSize="20" VerticalOptions="Center"  WidthRequest="150"/>
+
+                            <Label Text="{Binding Price, StringFormat='{}{0:C}'}" FontSize="20"
+                                   VerticalOptions="Center" Margin="20,0"  WidthRequest="150"/>
+
+                            <Button Text="Details"
+                                    WidthRequest="150"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type local:ProductsViewModel}}, Path=DetailsCommand}"
+                                    CommandParameter="{Binding Id}" />
+
+                            <Button Text="Modify"
+                                    WidthRequest="150"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type local:ProductsViewModel}}, Path=ModifyCommand}"
+                                    CommandParameter="{Binding Id}" Margin="5,0" />
+
+                            <Button Text="Delete"
+                                    WidthRequest="150"
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type local:ProductsViewModel}}, Path=DeleteCommand}"
+                                    CommandParameter="{Binding Id}" Margin="5,0" />
+                        </StackLayout>
+                    </Grid>
+                </Frame>
+            </DataTemplate>
+        </CollectionView.ItemTemplate>
+    </CollectionView>
+</ContentPage>

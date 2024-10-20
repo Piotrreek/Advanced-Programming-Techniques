@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="using:ProductsManager.ViewModels"
+             x:DataType="viewModels:ProductViewModel"
+             x:Class="ProductsManager.Views.ProductView"
+             Title="Product">
+    <VerticalStackLayout Spacing="15" Padding="20">
+
+        <Label Text="Product Name" FontAttributes="Bold" FontSize="Medium" />
+        <Entry
+            Placeholder="Enter product name"
+            Text="{Binding Name}"
+            WidthRequest="300"
+            HorizontalOptions="Start" />
+
+        <Label Text="Price" FontAttributes="Bold" FontSize="Medium" />
+        <Entry
+            Placeholder="Enter product price"
+            Keyboard="Numeric"
+            Text="{Binding Price}"
+            WidthRequest="300"
+            HorizontalOptions="Start" />
+
+        <Label Text="Quantity" FontAttributes="Bold" FontSize="Medium" />
+        <Entry
+            Placeholder="Enter quantity"
+            Keyboard="Numeric"
+            Text="{Binding Quantity}"
+            WidthRequest="300"
+            HorizontalOptions="Start" />
+
+        <Label Text="Description" FontAttributes="Bold" FontSize="Medium" />
+        <Editor
+            Placeholder="Enter product description"
+            AutoSize="TextChanges"
+            Text="{Binding Description}"
+            WidthRequest="300"
+            HorizontalOptions="Start" />
+
+        <HorizontalStackLayout Spacing="10" Opacity="0.75">
+            <Label Text="Available" FontAttributes="Bold" VerticalOptions="Center" />
+            <CheckBox IsEnabled="False" IsChecked="{Binding Available}" />
+        </HorizontalStackLayout>
+
+        <Button Text="Add"
+                IsVisible="{Binding AddButtonVisible}"
+                Command="{Binding AddCommand}"
+                BackgroundColor="#4CAF50"
+                TextColor="Black"
+                CornerRadius="10"
+                Padding="10"
+                FontAttributes="Bold"
+                WidthRequest="150"
+                HorizontalOptions="Start" />
+
+        <Button Text="Update"
+                IsVisible="{Binding UpdateButtonVisible}"
+                Command="{Binding UpdateCommand}"
+                BackgroundColor="#4CAF50"
+                TextColor="Black"
+                CornerRadius="10"
+                Padding="10"
+                FontAttributes="Bold"
+                WidthRequest="150"
+                HorizontalOptions="Start" />
+
+    </VerticalStackLayout>
+</ContentPage>

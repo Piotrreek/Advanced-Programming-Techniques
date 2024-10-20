@@ -41,6 +41,7 @@ public sealed class Product
     public void UpdateQuantity(ProductQuantity quantity)
     {
         Quantity = quantity;
+        Available = quantity > 0;
     }
 
     public void UpdatePrice(ProductPrice price)
