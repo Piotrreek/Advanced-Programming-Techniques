@@ -1,7 +1,5 @@
 using System.Collections.ObjectModel;
 using System.Windows.Input;
-using AsyncAwaitBestPractices;
-using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using ProductsManager.Models;
 
@@ -19,7 +17,6 @@ public sealed class ProductsViewModel
     public ProductsViewModel(IProductService productService)
     {
         _productService = productService;
-        LoadProducts().SafeFireAndForget();
 
         DetailsCommand = new AsyncRelayCommand<int>(Details);
         DeleteCommand = new AsyncRelayCommand<int>(Delete);
@@ -38,18 +35,17 @@ public sealed class ProductsViewModel
         }
     }
 
+    public Task Initialize()
+        => LoadProducts();
+
     private async Task Delete(int productId)
     {
-        var productToRemove = Products.FirstOrDefault(p => p.Id == productId);
-        if (productToRemove != null)
-        {
-            Products.Remove(productToRemove);
-        }
+        await _productService.RemoveProduct(productId);
+        await LoadProducts();
     }
 
     private static async Task Modify(int productId)
     {
-        // Assuming you have navigation set up
         await Shell.Current.GoToAsync($"//product?id={productId}");
     }
 

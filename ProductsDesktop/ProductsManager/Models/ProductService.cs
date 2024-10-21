@@ -1,5 +1,4 @@
 using System.Net.Http.Json;
-using ProductsManager.ViewModels;
 
 namespace ProductsManager.Models;
 
@@ -13,35 +12,44 @@ internal sealed class ProductService : IProductService
         _httpClient.BaseAddress = new Uri("http://localhost:8080/");
     }
 
-    public Task<ProductDetails?> GetProduct(int id)
-        => _httpClient.GetFromJsonAsync<ProductDetails>($"products/{id}");
+    public Task<ProductDetails> GetProduct(int id)
+        => _httpClient.GetFromJsonAsync<ProductDetails>($"products/{id}")!;
 
     public Task<List<Product>> GetProducts()
         => _httpClient.GetFromJsonAsync<List<Product>>("products")!;
 
-    public async Task Add(string? name, int? quantity, decimal? price, string? description)
+    public async Task<Result> RemoveProduct(int id)
     {
-        var product = new ProductDetails
-        {
-            Name = name,
-            Price = price.Value,
-            Quantity = quantity.Value,
-            Description = description
-        };
+        using var response = await _httpClient.DeleteAsync($"products/{id}");
 
-        await _httpClient.PostAsJsonAsync("products", product);
+        return response.IsSuccessStatusCode ? Result.Success() : Result.Failure("Failed to remove product");
     }
 
-    public async Task Update(int id, string? name, int? quantity, decimal? price, string? description)
+    public async Task<Result> Add(string? name, int? quantity, decimal? price, string? description)
     {
-        var product = new ProductDetails
-        {
-            Name = name,
-            Price = price.Value,
-            Quantity = quantity.Value,
-            Description = description
-        };
+        var productResult = ProductDetails.Create(name, price, quantity, description);
 
-        await _httpClient.PatchAsJsonAsync($"products/{id}", product);
+        if (!productResult.IsSuccess)
+        {
+            return productResult;
+        }
+
+        using var response = await _httpClient.PostAsJsonAsync("products", productResult.Product);
+
+        return response.IsSuccessStatusCode ? Result.Success() : Result.Failure("Failed to add product");
+    }
+
+    public async Task<Result> Update(int id, string? name, int? quantity, decimal? price, string? description)
+    {
+        var productResult = ProductDetails.Create(name, price, quantity, description);
+
+        if (!productResult.IsSuccess)
+        {
+            return productResult;
+        }
+
+        using var response = await _httpClient.PatchAsJsonAsync($"products/{id}", productResult.Product);
+
+        return response.IsSuccessStatusCode ? Result.Success() : Result.Failure("Failed to update product");
     }
 }

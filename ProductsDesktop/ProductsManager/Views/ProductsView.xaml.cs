@@ -9,5 +9,7 @@ public partial class ProductsView : ContentPage
         InitializeComponent();
 
         BindingContext = productsViewModel;
+
+        Appearing += async (_, _) => { await productsViewModel.Initialize(); };
     }
 }

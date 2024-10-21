@@ -9,14 +9,6 @@ public partial class ProductView : ContentPage
         InitializeComponent();
 
         BindingContext = productViewModel;
-    }
-
-    protected override void OnDisappearing()
-    {
-        base.OnDisappearing();
-        ((ProductViewModel)BindingContext).Name = null;
-        ((ProductViewModel)BindingContext).Description = null;
-        ((ProductViewModel)BindingContext).Price = null;
-        ((ProductViewModel)BindingContext).Quantity = null;
+        Disappearing += (_, _) => { productViewModel.Disappearing(); };
     }
 }

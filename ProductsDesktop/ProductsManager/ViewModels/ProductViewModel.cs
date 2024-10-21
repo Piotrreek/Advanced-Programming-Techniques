@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using System.Windows.Input;
 using AsyncAwaitBestPractices;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -81,6 +82,8 @@ public sealed class ProductViewModel : ObservableObject, IQueryAttributable
         }
     }
 
+    public ObservableCollection<string> Errors { get; } = [];
+
     public bool Available => _quantity > 0;
     public bool AddButtonVisible => Id is null;
     public bool UpdateButtonVisible => Id is not null;
@@ -88,10 +91,10 @@ public sealed class ProductViewModel : ObservableObject, IQueryAttributable
     public ICommand AddCommand { get; }
     public ICommand UpdateCommand { get; }
 
-
     public ProductViewModel(IProductService productService)
     {
         _productService = productService;
+
         AddCommand = new AsyncRelayCommand(Add);
         UpdateCommand = new AsyncRelayCommand(Update);
     }
@@ -100,8 +103,19 @@ public sealed class ProductViewModel : ObservableObject, IQueryAttributable
     {
         if (query.TryGetValue("id", out var value) && int.TryParse((string)value, out var id))
         {
+            Id = id;
             LoadProduct(id).SafeFireAndForget();
         }
+    }
+    
+    public void Disappearing()
+    {
+        Id = null;
+        Name = null;
+        Description = null;
+        Price = null;
+        Quantity = null;
+        Errors.Clear();
     }
 
     private async Task LoadProduct(int id)
@@ -114,15 +128,32 @@ public sealed class ProductViewModel : ObservableObject, IQueryAttributable
         Quantity = product.Quantity;
         Description = product.Description;
     }
-
+    
     private async Task Add()
     {
-        await _productService.Add(_name, _quantity, _price, _description);
+        Errors.Clear();
+        var result = await _productService.Add(_name, _quantity, _price, _description);
+        await HandleResult(result);
     }
 
     private async Task Update()
-    
     {
-        await _productService.Update(_id!.Value, _name, _quantity, _price, _description);
+        Errors.Clear();
+        var result = await _productService.Update(_id!.Value, _name, _quantity, _price, _description);
+        await HandleResult(result);
+    }
+
+    private async Task HandleResult(Result result)
+    {
+        if (result.IsSuccess)
+        {
+            await Shell.Current.GoToAsync("//products");
+            return;
+        }
+
+        foreach (var error in result.Errors)
+        {
+            Errors.Add(error);
+        }
     }
 }

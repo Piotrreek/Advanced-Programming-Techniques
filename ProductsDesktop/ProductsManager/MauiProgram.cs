@@ -26,7 +26,9 @@ public static class MauiProgram
         builder.Services.AddScoped<ProductViewModel>();
         builder.Services.AddScoped<ProductsViewModel>();
 
-        builder.Services.AddScoped<IProductService, ProductService>();
+        builder.Services.AddScoped<IProductService>(provider =>
+            new CachedProductService(new ProductService(provider.GetRequiredService<HttpClient>())));
+
         builder.Services.AddScoped(_ => new HttpClient());
 
 #if DEBUG
